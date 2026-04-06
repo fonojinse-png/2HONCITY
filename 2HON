@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2本 CITY</title>
+  <!-- preconnect speeds up Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Prompt', sans-serif;
+      background: #efefec;
+      color: #18181b;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ── Glass panels ─── */
+    .g-light {
+      background: rgba(255,255,255,0.38);
+      backdrop-filter: blur(24px) saturate(200%) brightness(106%);
+      -webkit-backdrop-filter: blur(24px) saturate(200%) brightness(106%);
+      border-top:    1.5px solid rgba(255,255,255,0.98);
+      border-left:   1px solid rgba(255,255,255,0.72);
+      border-right:  1px solid rgba(255,255,255,0.52);
+      border-bottom: 1px solid rgba(255,255,255,0.20);
+      box-shadow:
+        0 2.5px 0 0 rgba(255,255,255,0.90) inset,
+        0 -1px 0 0 rgba(0,0,0,0.03) inset,
+        0 1px 0 0 rgba(255,255,255,0.60) inset,
+        0 12px 48px rgba(0,0,0,0.08),
+        0 2px 6px rgba(0,0,0,0.04);
+      will-change: transform;
+    }
+    .g-dark {
+      background: rgba(14,14,16,0.88);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      border-top:    1.5px solid rgba(255,255,255,0.18);
+      border-left:   1px solid rgba(255,255,255,0.10);
+      border-right:  1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      box-shadow:
+        0 1.5px 0 0 rgba(255,255,255,0.14) inset,
+        inset -4px -6px 25px rgba(255,255,255,0.05),
+        inset 4px 4px 10px rgba(0,0,0,0.40),
+        0 28px 64px rgba(0,0,0,0.32),
+        0 4px 16px rgba(0,0,0,0.20);
+      will-change: transform;
+    }
+
+    /* ── Mint text gradient ─── */
+    .text-mint {
+      background: linear-gradient(118deg, #0284c7 0%, #059669 55%, #0369a1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Ambient orbs ─── */
+    @keyframes drift  { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(18px,-14px) scale(1.06)} }
+    @keyframes drift2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-12px,16px) scale(0.96)} }
+    .orb-a { animation: drift  9s ease-in-out infinite; will-change: transform; contain: layout style; }
+    .orb-b { animation: drift2 12s ease-in-out infinite; will-change: transform; contain: layout style; }
+    .orb-c { animation: drift  14s ease-in-out infinite reverse; will-change: transform; contain: layout style; }
+
+    /* ── Entrance animations ─── */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(28px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .anim { opacity:0; animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .d1 { animation-delay: 0.08s; }
+    .d2 { animation-delay: 0.22s; }
+    .d3 { animation-delay: 0.36s; }
+    .d4 { animation-delay: 0.50s; }
+    .d5 { animation-delay: 0.64s; }
+
+    /* ── Pulse dot ─── */
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .dot-pulse { animation: pulse 2.4s ease-in-out infinite; }
+
+    /* ── CTA button ─── */
+    .cta { transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1); cursor:pointer; }
+    .cta:hover  { transform: scale(1.04); }
+    .cta:active { transform: scale(0.97); }
+
+    /* ── Nav links ─── */
+    .nav-a {
+      position: relative;
+      color: rgba(24,24,27,0.45);
+      font-size: 13.5px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .nav-a::after {
+      content:'';
+      position:absolute;
+      bottom:-3px; left:50%; right:50%;
+      height:1.5px;
+      background: linear-gradient(90deg,#67e8f9,#86efac);
+      border-radius:2px;
+      transition: left 0.25s ease, right 0.25s ease;
+    }
+    .nav-a:hover { color:#18181b; }
+    .nav-a:hover::after { left:0; right:0; }
+
+    /* ── Social sidebar buttons ─── */
+    .soc-btn {
+      width:36px; height:36px;
+      border-radius:10px;
+      display:flex; align-items:center; justify-content:center;
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s;
+      opacity:0.6;
+    }
+    .soc-btn:hover { transform:scale(1.15); opacity:1; }
+
+    /* ── Secondary link ─── */
+    .sec-link {
+      font-size:13px; font-weight:500;
+      color:rgba(24,24,27,0.35);
+      text-decoration:none;
+      letter-spacing:0.02em;
+      transition:color 0.2s;
+    }
+    .sec-link:hover { color:#67e8f9; }
+
+    /* ── Scroll reveal ─── */
+    .reveal {
+      opacity:0;
+      transform:translateY(36px);
+      contain: layout;
+    }
+
+    /* ── Tag pills ─── */
+    .tag-blue { padding:6px 16px; border-radius:999px; font-size:12.5px; font-weight:500; background:rgba(14,165,233,0.10); color:#0284c7; }
+    .tag-green { padding:6px 16px; border-radius:999px; font-size:12.5px; font-weight:500; background:rgba(16,185,129,0.10); color:#059669; }
+
+    /* ── Stats bar numbers ─── */
+    .stat-num { font-size:clamp(32px,4.5vw,52px); font-weight:600; letter-spacing:-0.04em; }
+    .stat-label { font-size:12px; font-weight:400; color:rgba(255,255,255,0.45); letter-spacing:0.07em; text-transform:uppercase; }
+
+    /* ── Grid responsive ─── */
+    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+
+    @media (max-width:700px) {
+      .grid-2 { grid-template-columns:1fr; }
+      .grid-3 { grid-template-columns:1fr; }
+    }
+    @media (min-width:701px) and (max-width:960px) {
+      .grid-3 { grid-template-columns:1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ░░ AMBIENT ORBS ░░ -->
+  <div aria-hidden="true" style="position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;">
+    <div class="orb-a" style="position:absolute;top:-10%;left:-8%;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(167,243,208,0.42) 0%,transparent 68%);"></div>
+    <div class="orb-b" style="position:absolute;top:5%;right:-10%;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(125,211,252,0.38) 0%,transparent 68%);"></div>
+    <div class="orb-c" style="position:absolute;bottom:0;left:28%;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(196,181,253,0.26) 0%,transparent 70%);"></div>
+  </div>
+
+  <!-- ░░ VIDEO BACKGROUND ░░ -->
+  <div aria-hidden="true" style="position:fixed;inset:0;z-index:1;overflow:hidden;pointer-events:none;">
+    <video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;transform:scaleY(-1);opacity:0.28;" preload="none">
+      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260302_085640_276ea93b-d7da-4418-a09b-2aa5b490e838.mp4" type="video/mp4">
+    </video>
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,0) 26%,#efefec 67%);"></div>
+  </div>
+
+  <!-- ░░ NAVBAR ░░ -->
+  <nav class="anim d1" style="position:fixed;top:28px;left:0;right:0;z-index:100;display:flex;justify-content:center;padding:0 20px;">
+    <div class="g-light" style="display:inline-flex;align-items:center;gap:0;padding:0;height:56px;border-radius:999px;overflow:hidden;">
+
+      <!-- Logo -->
+      <div style="display:flex;align-items:center;padding:0 24px 0 28px;border-right:1px solid rgba(255,255,255,0.5);height:100%;position:relative;">
+        <div style="position:absolute;top:0;right:-1px;width:1px;height:100%;background:linear-gradient(to bottom,transparent,rgba(0,0,0,0.08),transparent);"></div>
+        <div style="text-align:center;line-height:1.1;">
+          <div style="font-size:17px;font-weight:700;letter-spacing:-0.02em;color:#18181b;">2本</div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.06em;color:rgba(24,24,27,0.45);">CITY</div>
+        </div>
+      </div>
+
+      <!-- Links -->
+      <div style="display:flex;align-items:center;gap:28px;padding:0 28px;">
+        <a class="nav-a" onclick="window.scrollTo({top:0,behavior:'smooth'})">หน้าแรก</a>
+        <a class="nav-a" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">เกี่ยวกับเรา</a>
+        <a class="nav-a" onclick="showComingSoon(this)">พาร์ทเนอร์</a>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ░░ COMING SOON TOOLTIP ░░ -->
+  <div id="soon-tip" style="position:fixed;top:100px;left:50%;transform:translateX(-50%);z-index:200;
+    background:#18181b;color:#fff;font-size:12px;font-weight:500;padding:8px 18px;border-radius:999px;
+    opacity:0;pointer-events:none;transition:opacity 0.2s;">เร็วๆ นี้</div>
+
+  <!-- ░░ SOCIAL SIDEBAR ░░ -->
+  <aside id="sidebar" class="anim d2" style="position:fixed;left:20px;top:50%;transform:translateY(-50%);z-index:50;display:none;">
+    <div class="g-light" style="padding:12px;border-radius:18px;display:flex;flex-direction:column;align-items:center;gap:14px;">
+
+      <a href="https://discord.gg/K7VQgCv654" target="_blank" title="Discord" class="soc-btn" style="background:rgba(88,101,242,0.14);color:#5865F2;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+      </a>
+
+      <div style="width:20px;height:1px;background:rgba(0,0,0,0.08);border-radius:2px;"></div>
+
+      <a href="https://www.instagram.com/nihon.sever/" target="_blank" title="Instagram" class="soc-btn" style="background:rgba(225,48,108,0.12);color:#E1306C;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+
+      <a href="https://www.tiktok.com/@2city67?_r=1&_t=ZS-959SQ3gMMi5" target="_blank" title="TikTok" class="soc-btn" style="background:rgba(0,0,0,0.07);color:#18181b;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.15 8.15 0 0 0 4.76 1.52V6.75a4.85 4.85 0 0 1-.99-.06z"/></svg>
+      </a>
+
+      <a href="https://www.facebook.com/profile.php?id=61579481912910" target="_blank" title="Facebook" class="soc-btn" style="background:rgba(24,119,242,0.12);color:#1877F2;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.027 4.388 11.024 10.125 11.927v-8.437H7.078v-3.49h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.49h-2.796v8.437C19.612 23.097 24 18.1 24 12.073z"/></svg>
+      </a>
+
+    </div>
+  </aside>
+
+  <!-- ░░ HERO ░░ -->
+  <main style="position:relative;z-index:10;max-width:1200px;margin:0 auto;padding:160px 32px 120px;
+               display:flex;flex-direction:column;align-items:center;text-align:center;gap:28px;">
+
+    <!-- Member badge -->
+    <div class="anim d2">
+      <div class="g-light" style="display:inline-flex;align-items:center;gap:10px;padding:8px 18px;border-radius:999px;">
+        <span class="dot-pulse" style="width:8px;height:8px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#67e8f9,#86efac);"></span>
+        <span id="member-badge" style="font-size:11px;font-weight:600;letter-spacing:0.18em;color:rgba(24,24,27,0.45);">กำลังโหลด...</span>
+      </div>
+    </div>
+
+    <!-- Heading -->
+    <div class="anim d3" style="display:flex;flex-direction:column;align-items:center;gap:0;overflow:visible;">
+      <h1 style="font-size:clamp(40px,6.8vw,82px);font-weight:600;letter-spacing:-0.035em;line-height:1.0;color:#18181b;">
+        2本 CITY
+      </h1>
+      <h1 class="text-mint" style="font-size:clamp(40px,6.8vw,82px);font-weight:600;letter-spacing:-0.035em;line-height:1.3;padding:0.05em 0.1em 0.2em;overflow:visible;display:block;">
+        พื้นที่นี้ มีให้สำหรับทุกคน
+      </h1>
+    </div>
+
+    <!-- Sub-heading -->
+    <p class="anim d4" style="font-size:clamp(15px,1.7vw,19px);font-weight:300;line-height:1.75;color:rgba(24,24,27,0.48);max-width:560px;">
+      ไม่ใช่แค่เซิร์ฟเวอร์หรือพื้นที่เล่นเกม<br>
+      แต่คือพื้นที่คุย พื้นที่ที่คุณจะรู้สึกเป็นตัวเองได้มากที่สุด
+    </p>
+
+    <!-- CTA -->
+    <div class="anim d5" style="display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:6px;">
+      <a href="https://discord.gg/K7VQgCv654" target="_blank" rel="noopener noreferrer">
+        <button class="cta g-dark" style="display:inline-flex;align-items:center;gap:14px;padding:15px 40px;
+          border-radius:999px;color:#fff;font-family:'Prompt',sans-serif;font-size:17px;font-weight:500;
+          letter-spacing:-0.01em;border:none;outline:none;">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor" style="color:#7dd3fc;flex-shrink:0;">
+            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+          </svg>
+          เข้าร่วมเมืองของเรา
+        </button>
+      </a>
+      <a href="#about" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'});return false;" class="sec-link">
+        ทำความรู้จักครอบครัว 2本 CITY ของเรา →
+      </a>
+    </div>
+
+  </main>
+
+  <!-- ░░ ABOUT SECTION ░░ -->
+  <section id="about" style="position:relative;z-index:10;padding:120px 32px 140px;">
+    <div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:64px;">
+
+      <!-- Header -->
+      <div class="reveal" style="display:flex;flex-direction:column;gap:14px;">
+        <span style="font-size:11px;font-weight:600;letter-spacing:0.22em;color:rgba(24,24,27,0.35);text-transform:uppercase;">เกี่ยวกับเรา</span>
+        <h2 style="font-size:clamp(32px,4.5vw,56px);font-weight:600;letter-spacing:-0.03em;line-height:1.1;color:#18181b;">
+          ไม่ใช่แค่เซิร์ฟเวอร์<br>
+          <span class="text-mint" style="display:block;overflow:visible;padding:0.1em 0.05em 0.15em;">แต่คือชุมชนที่มีชีวิต</span>
+        </h2>
+        <p style="font-size:17px;font-weight:300;line-height:1.8;color:rgba(24,24,27,0.5);max-width:620px;margin-top:4px;">
+          2本 CITY คือชุมชน Discord ภาษาไทยที่สร้างขึ้นเพื่อให้สมาชิกทุกคนรู้สึกว่าตัวเองมีตัวตนในชุมชนอย่างแท้จริง ไม่ใช่เพียงแค่ตัวเลขในหน้าสมาชิก
+        </p>
+      </div>
+
+      <!-- Row 1: ประวัติ + วิสัยทัศน์ -->
+      <div class="reveal grid-2">
+        <div class="g-light" style="padding:36px;border-radius:28px;display:flex;flex-direction:column;gap:16px;">
+          <div style="width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(103,232,249,0.18),rgba(134,239,172,0.18));">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#0ea5e9;">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <h3 style="font-size:18px;font-weight:600;color:#18181b;letter-spacing:-0.02em;">ประวัติความเป็นมา</h3>
+          <p style="font-size:14.5px;font-weight:300;line-height:1.85;color:rgba(24,24,27,0.52);">
+            เริ่มต้นจากแนวคิดเล็กๆ ของกลุ่มคนที่ต้องการชุมชนที่แตกต่าง ไม่ใช่เซิร์ฟเวอร์ที่มีแค่ห้องแชทว่างเปล่า แต่เป็นพื้นที่ที่มีชีวิต มีโครงสร้าง และมีเอกลักษณ์เป็นของตัวเอง จนกลายเป็น 2本 CITY ในแบบที่เห็นอยู่ในวันนี้
+          </p>
+        </div>
+
+        <div class="g-light" style="padding:36px;border-radius:28px;display:flex;flex-direction:column;gap:16px;">
+          <div style="width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(134,239,172,0.18),rgba(103,232,249,0.18));">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#10b981;">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+          <h3 style="font-size:18px;font-weight:600;color:#18181b;letter-spacing:-0.02em;">วิสัยทัศน์</h3>
+          <p style="font-size:14.5px;font-weight:300;line-height:1.85;color:rgba(24,24,27,0.52);">
+            มุ่งสร้างชุมชนออนไลน์ที่สมาชิกทุกคนสามารถแสดงตัวตน แบ่งปันความสนใจ และเติบโตไปพร้อมกันได้ในสภาพแวดล้อมที่ปลอดภัย เราเชื่อว่าชุมชนที่แข็งแกร่งสร้างได้จากความสัมพันธ์ที่แท้จริงระหว่างผู้คน
+          </p>
+        </div>
+      </div>
+
+      <!-- Row 2: ระบบภายใน -->
+      <div class="reveal g-light" style="padding:40px 44px;border-radius:28px;display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;align-items:flex-start;gap:20px;">
+          <div style="width:44px;height:44px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(103,232,249,0.2),rgba(134,239,172,0.2));">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#0ea5e9;">
+              <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <h3 style="font-size:19px;font-weight:600;color:#18181b;letter-spacing:-0.02em;">ระบบภายในเซิร์ฟเวอร์</h3>
+            <p style="font-size:14.5px;font-weight:300;line-height:1.85;color:rgba(24,24,27,0.52);max-width:780px;">
+              มีระบบเศรษฐกิจภายใน (Economy System) ที่ให้สมาชิกสะสมเหรียญจากการมีส่วนร่วม และนำไปแลกรับสิทธิพิเศษผ่านระบบร้านค้าของเซิร์ฟเวอร์ พร้อมระบบ Role ที่ออกแบบมาอย่างละเอียด ทั้ง Role ทั่วไป Role สถานะ และ Role พิเศษจากกิจกรรม เพื่อให้สมาชิกแต่ละคนแสดงตัวตนได้อย่างชัดเจนในแบบของตัวเอง
+            </p>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;">
+          <span class="tag-blue">Economy System</span>
+          <span class="tag-green">Role พิเศษ</span>
+          <span class="tag-blue">ร้านค้า</span>
+          <span class="tag-green">Lunar Pass</span>
+        </div>
+      </div>
+
+      <!-- Row 3: กิจกรรม -->
+      <div class="reveal" style="display:flex;flex-direction:column;gap:20px;">
+        <h3 style="font-size:20px;font-weight:600;color:#18181b;letter-spacing:-0.02em;">กิจกรรมและ Event</h3>
+        <div class="grid-3">
+          <div class="g-light" style="padding:28px;border-radius:24px;display:flex;flex-direction:column;gap:12px;">
+            <span style="font-size:22px;">🎵</span>
+            <h4 style="font-size:15px;font-weight:600;color:#18181b;">ด้านดนตรี</h4>
+            <p style="font-size:13.5px;font-weight:300;line-height:1.75;color:rgba(24,24,27,0.5);">การส่งเพลงประจำ Event ให้สมาชิกแบ่งปันรสนิยมและค้นพบเพลงใหม่ไปพร้อมกัน</p>
+          </div>
+          <div class="g-light" style="padding:28px;border-radius:24px;display:flex;flex-direction:column;gap:12px;">
+            <span style="font-size:22px;">💬</span>
+            <h4 style="font-size:15px;font-weight:600;color:#18181b;">ด้านความคิด</h4>
+            <p style="font-size:13.5px;font-weight:300;line-height:1.75;color:rgba(24,24,27,0.5);">กิจกรรมดีเบตที่เปิดพื้นที่แลกเปลี่ยนมุมมองในประเด็นต่างๆ อย่างสร้างสรรค์</p>
+          </div>
+          <div class="g-light" style="padding:28px;border-radius:24px;display:flex;flex-direction:column;gap:12px;">
+            <span style="font-size:22px;">🎉</span>
+            <h4 style="font-size:15px;font-weight:600;color:#18181b;">พิเศษตามวาระ</h4>
+            <p style="font-size:13.5px;font-weight:300;line-height:1.75;color:rgba(24,24,27,0.5);">เฉลิมฉลองช่วงเวลาสำคัญของชุมชน เช่น Milestone สมาชิกหรือวันครบรอบ</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 4: ทีมงาน + แนวทาง -->
+      <div class="reveal grid-2">
+        <div class="g-light" style="padding:36px;border-radius:28px;display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(103,232,249,0.14);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#0ea5e9;">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <h3 style="font-size:18px;font-weight:600;color:#18181b;letter-spacing:-0.02em;">ทีมงาน</h3>
+          </div>
+          <p style="font-size:14px;font-weight:300;line-height:1.85;color:rgba(24,24,27,0.52);">
+            ดูแลโดยทีม Staff ที่คัดสรรมาอย่างมีมาตรฐาน ครอบคลุมทั้งการจัดการชุมชน การดูแลกิจกรรม และการพัฒนาเซิร์ฟเวอร์ ภายใต้การนำของ Head Admin และมีการประชุมทีมอย่างสม่ำเสมอ
+          </p>
+          <p style="font-size:13px;font-style:italic;font-weight:300;color:rgba(14,165,233,0.8);margin-top:4px;">
+            "Staff คือส่วนหนึ่งที่ทำให้บรรยากาศของ 2本 CITY เป็นแบบที่มันเป็นอยู่"
+          </p>
+        </div>
+
+        <div class="g-light" style="padding:36px;border-radius:28px;display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(134,239,172,0.14);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#10b981;">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <h3 style="font-size:18px;font-weight:600;color:#18181b;letter-spacing:-0.02em;">แนวทางชุมชน</h3>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="width:6px;height:6px;border-radius:50%;background:#0ea5e9;flex-shrink:0;margin-top:7px;"></span>
+              <p style="font-size:13.5px;font-weight:300;line-height:1.7;color:rgba(24,24,27,0.52);">ให้ความเคารพต่อสมาชิกทุกคนโดยไม่มีข้อยกเว้น</p>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="width:6px;height:6px;border-radius:50%;background:#10b981;flex-shrink:0;margin-top:7px;"></span>
+              <p style="font-size:13.5px;font-weight:300;line-height:1.7;color:rgba(24,24,27,0.52);">ไม่โพสต์เนื้อหาที่ไม่เหมาะสมหรือสร้างความเกลียดชัง</p>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="width:6px;height:6px;border-radius:50%;background:#0ea5e9;flex-shrink:0;margin-top:7px;"></span>
+              <p style="font-size:13.5px;font-weight:300;line-height:1.7;color:rgba(24,24,27,0.52);">ใช้ช่องทางให้ตรงกับวัตถุประสงค์ที่กำหนด</p>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="width:6px;height:6px;border-radius:50%;background:#10b981;flex-shrink:0;margin-top:7px;"></span>
+              <p style="font-size:13.5px;font-weight:300;line-height:1.7;color:rgba(24,24,27,0.52);">ปฏิบัติตามคำแนะนำของทีม Staff ในทุกกรณี</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 5: Stats bar -->
+      <div class="reveal g-dark" style="padding:40px 48px;border-radius:28px;display:flex;justify-content:space-around;align-items:center;flex-wrap:wrap;gap:32px;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <span class="stat-num" id="stats-members" style="background:linear-gradient(118deg,#67e8f9 0%,#6ee7b7 55%,#38bdf8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;overflow:visible;padding-bottom:0.1em;">~1,000</span>
+          <span class="stat-label">MEMBERS</span>
+        </div>
+        <div style="width:1px;height:48px;background:rgba(255,255,255,0.08);"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <span class="stat-num" style="color:#fff;">3+</span>
+          <span class="stat-label">EVENT TYPES</span>
+        </div>
+        <div style="width:1px;height:48px;background:rgba(255,255,255,0.08);"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <span class="stat-num" style="color:#fff;">24/7</span>
+          <span class="stat-label">ACTIVE</span>
+        </div>
+        <div style="width:1px;height:48px;background:rgba(255,255,255,0.08);"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <span class="stat-num" style="color:#fff;">TH</span>
+          <span class="stat-label">COMMUNITY</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ░░ SCRIPTS ░░ -->
+  <script>
+    /* Sidebar visibility */
+    function checkWidth() {
+      var s = document.getElementById('sidebar');
+      if (s) s.style.display = window.innerWidth >= 1024 ? 'flex' : 'none';
+    }
+    checkWidth();
+    window.addEventListener('resize', checkWidth);
+
+    /* Coming soon tooltip */
+    function showComingSoon(el) {
+      var tip = document.getElementById('soon-tip');
+      tip.style.opacity = '1';
+      setTimeout(function() { tip.style.opacity = '0'; }, 1800);
+    }
+
+    /* Scroll reveal */
+    var revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+          revealObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(function(el, i) {
+      el.style.transition = 'opacity 0.85s cubic-bezier(0.16,1,0.3,1) ' + (i * 0.1) + 's, transform 0.85s cubic-bezier(0.16,1,0.3,1) ' + (i * 0.1) + 's';
+      revealObserver.observe(el);
+    });
+
+    /* Discord real-time member count */
+    async function fetchDiscord() {
+      try {
+        var r = await fetch('https://discord.com/api/guilds/1452712108868370571/widget.json');
+        var d = await r.json();
+        if (d && d.presence_count) {
+          document.getElementById('member-badge').textContent = d.presence_count.toLocaleString() + '+ ONLINE NOW';
+          document.getElementById('stats-members').textContent = d.presence_count.toLocaleString() + '+';
+        } else {
+          document.getElementById('member-badge').textContent = '1,000+ ACTIVE MEMBERS';
+        }
+      } catch(e) {
+        document.getElementById('member-badge').textContent = '1,000+ ACTIVE MEMBERS';
+      }
+    }
+    fetchDiscord();
+    setInterval(fetchDiscord, 60000);
+  </script>
+
+</body>
+</html>
